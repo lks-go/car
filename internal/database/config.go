@@ -6,39 +6,43 @@ import (
 )
 
 const (
-	emptyHost     = `empty host`
-	emptyPort     = `empty port`
-	emptyUserName = `empty user name`
-	emptyPassword = `empty password`
-	emptyDBName   = `empty db name`
-	emptySSLMode  = `empty SSL mode`
+	emptyHost       = `empty host`
+	emptyPort       = `empty port`
+	emptyUserName   = `empty user name`
+	emptyPassword   = `empty password`
+	emptyDBName     = `empty db name`
+	emptyTestDBName = `empty test db name`
+	emptySSLMode    = `empty SSL mode`
 )
 
 const (
-	EnvHost     = "CAR_DB_HOST"
-	EnvPort     = "CAR_DB_PORT"
-	EnvUserName = "CAR_DB_USER_NAME"
-	EnvPassword = "CAR_DB_PASSWORD"
-	EnvDBName   = "CAR_DB_NAME"
-	EnvSSLMode  = "CAR_DB_SSL_MODE"
+	EnvHost       = "CAR_DB_HOST"
+	EnvPort       = "CAR_DB_PORT"
+	EnvUserName   = "CAR_DB_USER_NAME"
+	EnvPassword   = "CAR_DB_PASSWORD"
+	EnvDBName     = "CAR_DB_NAME"
+	EnvTestDBName = "CAR_TEST_DB_NAME"
+	EnvSSLMode    = "CAR_DB_SSL_MODE"
 )
 
 var (
-	ErrEmptyHost     = errors.New(emptyHost)
-	ErrEmptyPort     = errors.New(emptyPort)
-	ErrEmptyUserName = errors.New(emptyUserName)
-	ErrEmptyPassword = errors.New(emptyPassword)
-	ErrEmptyDBName   = errors.New(emptyDBName)
-	ErrEmptySSLMode  = errors.New(emptySSLMode)
+	ErrEmptyHost       = errors.New(emptyHost)
+	ErrEmptyPort       = errors.New(emptyPort)
+	ErrEmptyUserName   = errors.New(emptyUserName)
+	ErrEmptyPassword   = errors.New(emptyPassword)
+	ErrEmptyDBName     = errors.New(emptyDBName)
+	ErrEmptyTestDBName = errors.New(emptyTestDBName)
+	ErrEmptySSLMode    = errors.New(emptySSLMode)
 )
 
 type Config struct {
-	Host     string
-	Port     string
-	UserName string
-	Password string
-	DBName   string
-	SSLMode  string
+	Host       string
+	Port       string
+	UserName   string
+	Password   string
+	DBName     string
+	TestDBName string
+	SSLMode    string
 }
 
 // Validate checks if the config is ok
@@ -62,6 +66,10 @@ func (cfg *Config) Validate() error {
 
 	if len(cfg.DBName) == 0 {
 		return ErrEmptyDBName
+	}
+
+	if len(cfg.TestDBName) == 0 {
+		return ErrEmptyTestDBName
 	}
 
 	if len(cfg.SSLMode) == 0 {
