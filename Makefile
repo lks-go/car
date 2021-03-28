@@ -1,3 +1,5 @@
+.PHONY: run test migrate migrate_test
+
 run:
 	go run cmd/app/main.go
 
@@ -8,4 +10,4 @@ migrate_test:
 	migrate -database ${CAR_POSTGRES_TEST_URL} -path migrations up
 
 test:
-	go test ./... -v
+	go clean -testcache && go test ./... -v
