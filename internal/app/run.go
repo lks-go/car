@@ -32,11 +32,6 @@ func Run() {
 	}
 	defer db.Close()
 
-	log.Println("initializing schema...")
-	if err := database.InitSchema(db); err != nil {
-		log.Fatal(fmt.Errorf("can't intialize schema: %s", err))
-	}
-
 	repo := repository.New(db)
 
 	r := router.InitRoutes(&router.Handlers{
