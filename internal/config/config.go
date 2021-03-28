@@ -30,13 +30,12 @@ func (cfg *config) Init() error {
 	}
 
 	cfg.Database = &database.Config{
-		Host:       os.Getenv(database.EnvHost),
-		Port:       os.Getenv(database.EnvPort),
-		UserName:   os.Getenv(database.EnvUserName),
-		Password:   os.Getenv(database.EnvPassword),
-		DBName:     os.Getenv(database.EnvDBName),
-		TestDBName: os.Getenv(database.EnvTestDBName),
-		SSLMode:    os.Getenv(database.EnvSSLMode),
+		Host:     os.Getenv(database.EnvHost),
+		Port:     os.Getenv(database.EnvPort),
+		UserName: os.Getenv(database.EnvUserName),
+		Password: os.Getenv(database.EnvPassword),
+		DBName:   os.Getenv(database.EnvDBName),
+		SSLMode:  os.Getenv(database.EnvSSLMode),
 	}
 
 	if err := cfg.validate(); err != nil {
