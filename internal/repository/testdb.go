@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/lks-go/car/internal/config"
-
 	"github.com/lks-go/car/internal/database"
+
+	"github.com/lks-go/car/internal/config"
 )
 
 func TestDB(t *testing.T) (*sql.DB, func(...string)) {

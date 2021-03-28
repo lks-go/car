@@ -39,6 +39,6 @@ func Run() {
 	})
 
 	if err := server.Start(cfg.Server, r); err != nil {
-		log.Fatal(fmt.Errorf("can't start server: %s", err))
+		log.Println(err)
 	}
 }
