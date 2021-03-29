@@ -1,3 +1,5 @@
+// +build database
+
 package car_test
 
 import (

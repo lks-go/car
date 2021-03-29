@@ -1,4 +1,4 @@
-.PHONY: run test migrate migrate_test
+.PHONY: run test test_db migrate migrate_test
 
 run:
 	go run cmd/app/main.go
@@ -11,3 +11,6 @@ migrate_test:
 
 test:
 	go clean -testcache && go test ./... -v
+
+test_db:
+	go clean -testcache && go test -tags=database ./... -v
