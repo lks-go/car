@@ -1,12 +1,12 @@
 package domain
 
 type Car struct {
-	ID      uint
-	Brand   string
-	Model   string
-	Price   uint
-	Status  Status
-	Mileage uint
+	ID      uint   `json:"id"`
+	Brand   string `json:"brand"`
+	Model   string `json:"model"`
+	Price   uint   `json:"price"`
+	Status  Status `json:"status"`
+	Mileage uint   `json:"mileage"`
 }
 
 // Status shows the cars sale status

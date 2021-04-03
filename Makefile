@@ -14,3 +14,6 @@ test:
 
 test_db:
 	go clean -testcache && go test -tags=database ./... -v
+
+test_handlers:
+	go clean -testcache && go test -tags=handlers ./... -v

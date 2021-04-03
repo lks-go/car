@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -75,13 +76,7 @@ func (h *CarHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	b, err := json.Marshal(newCar)
-	if err != nil {
-		responseError(w, http.StatusInternalServerError, err)
-		return
-	}
-
-	responseOk(w, b)
+	responseCreated(w, fmt.Sprintf("/api/v1/car/%d", newCar.ID))
 }
 
 func (h *CarHandler) Update(w http.ResponseWriter, r *http.Request) {
