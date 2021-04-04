@@ -87,9 +87,72 @@ func TestHandlerCreate(t *testing.T) {
 }
 
 func TestHandlerUpdate(t *testing.T) {
+	mock := handler.NewCarMock()
+	h := handler.NewCarHandler(mock)
+
+	car, err := mock.GetByID(1)
+	if err != nil {
+		t.Errorf("didn't expect an error: got %v", err)
+		return
+	}
+
+	// changing car data
+	car.Mileage = 210000
+	car.Price = 180000
+
+	b, err := json.Marshal(car)
+	if err != nil {
+		t.Errorf("didn't expect an error: got %v", err)
+		return
+	}
+
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("PUT", "/api/v1/car/1", bytes.NewReader(b))
+	r := mux.NewRouter()
+	r.HandleFunc("/api/v1/car/{id:[0-9]+}", h.Update)
+	r.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Errorf("handler should have return http code %d: got %d", http.StatusOK, rec.Code)
+		return
+	}
+
+	resCar := domain.Car{}
+	if err := json.NewDecoder(rec.Body).Decode(&resCar); err != nil {
+		t.Errorf("didn't expect an error: got %v", err)
+		return
+	}
+
+	if resCar.ID != car.ID || resCar.Price != car.Price || resCar.Mileage != car.Mileage {
+		t.Errorf("expected ID: %v, Price: %v, Mileage: %v\n got ID: %v, Price: %v, Mileage: %v",
+			car.ID, car.Price, car.Mileage, resCar.ID, resCar.Price, resCar.Mileage)
+	}
 
 }
 
 func TestHandlerDelete(t *testing.T) {
+	testCases := []struct {
+		ID                 uint
+		ExpectedStatusCode int
+		ShouldPass         bool
+	}{
+		{ID: 1, ExpectedStatusCode: http.StatusOK, ShouldPass: true},
+		{ID: 100, ExpectedStatusCode: http.StatusNotFound, ShouldPass: true},
+		{ID: 1, ExpectedStatusCode: http.StatusOK, ShouldPass: false},
+	}
+
+	h := handler.NewCarHandler(handler.NewCarMock())
+
+	for _, tc := range testCases {
+		rec := httptest.NewRecorder()
+		req := httptest.NewRequest("DELETE", fmt.Sprintf("/api/v1/car/%d", tc.ID), nil)
+		r := mux.NewRouter()
+		r.HandleFunc("/api/v1/car/{id:[0-9]+}", h.Delete)
+		r.ServeHTTP(rec, req)
+
+		if tc.ShouldPass && rec.Code != tc.ExpectedStatusCode {
+			t.Errorf("handler should have return http code %d: got %d", tc.ExpectedStatusCode, rec.Code)
+		}
+	}
 
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/lks-go/car/internal/domain"
 )
@@ -54,10 +55,23 @@ func (cm *CarMock) Create(c *domain.Car) (*domain.Car, error) {
 
 func (cm *CarMock) Update(c *domain.Car) (*domain.Car, error) {
 
-	return nil, nil
+	if _, ok := cm.db[c.ID]; !ok {
+		return nil, nil
+	}
+
+	cm.db[c.ID] = *c
+
+	updatedCar := cm.db[c.ID]
+
+	return &updatedCar, nil
 }
 
 func (cm *CarMock) Delete(ID uint) error {
+	if _, ok := cm.db[ID]; !ok {
+		return errors.New(fmt.Sprintf("record with ID %d not found", ID))
+	}
+
+	delete(cm.db, ID)
 
 	return nil
 }
